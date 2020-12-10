@@ -7,6 +7,8 @@ import requests
 
 def clutch_stats_retriever():
     '''
+    Scrapes website to return a dataframe containing data on a player's clutch
+    statistics. 
     '''
 
     link = 'http://stats.inpredictable.com/nba/ssnPlayerSplit.php?season=2019&pos=ALL&team=ALL&po=0&frdt=2018-10-16&todt=2019-06-13&shot=both&dst=plyr'
@@ -48,9 +50,9 @@ def clutch_stats_retriever():
 
 def column_getter(index):
     '''
+    Returns a list of values based on index location. 
     '''
 
     values = data_values[index::17]
     
     return values
-
