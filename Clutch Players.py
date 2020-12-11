@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import numpy as np
+import operator
 import os
 import pandas as pd
 import requests
@@ -48,12 +49,16 @@ def clutch_stats_retriever():
     return df
 
 
-def value_dropper(list_object, n):
+def index_retriever(offset):
     '''
-    Deletes every n-th item from a list. 
     '''
 
-    del list_object[::n]
+    indexes_to_drop = []
+    for index, value in enumerate(data_values):
+        if value == 'League Benchmarks:':
+            indexes_to_drop.append(index + offset)
+
+    return indexes_to_drop
 
 
 def column_getter(index):
@@ -79,10 +84,15 @@ for year in years:
         contents = text.get_text()
         data_values.append(contents)
 
-for _ in range(9):
-    value_dropper(data_values, 859)
+indexes_to_drop = [index_retriever(number) for number in range(1, 9)]
+indexes_to_drop = [item for sublist in indexes_to_drop for item in sublist]
+data_values = np.delete(data_values, indexes_to_drop)
 
-data_values[1::17]
+
+
+
+
+
 
 df = pd.DataFrame(data_values)
 
