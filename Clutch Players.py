@@ -48,6 +48,14 @@ def clutch_stats_retriever():
     return df
 
 
+def value_dropper(list_object, n):
+    '''
+    Deletes every n-th item from a list. 
+    '''
+
+    del list_object[::n]
+
+
 def column_getter(index):
     '''
     Returns a list of values based on index location. 
@@ -56,3 +64,38 @@ def column_getter(index):
     values = data_values[index::17]
     
     return values
+
+
+years = [str(year) for year in range(1996, 2020)]
+base_link = 'http://stats.inpredictable.com/nba/ssnPlayerSplit.php?season={}'
+
+data_values = []
+for year in years:
+    response = requests.get(base_link.format(year))
+    soup = BeautifulSoup(response.text, 'lxml')
+    raw_text = soup.find_all('td')
+
+    for text in raw_text:
+        contents = text.get_text()
+        data_values.append(contents)
+
+for _ in range(9):
+    value_dropper(data_values, 859)
+
+data_values[1::17]
+
+df = pd.DataFrame(data_values)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
