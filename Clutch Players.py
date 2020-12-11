@@ -24,6 +24,26 @@ def clutch_stats_retriever():
         for text in raw_text:
             contents = text.get_text()
             data_values.append(contents)
+    
+    def index_retriever(offset):
+        '''
+        '''
+
+        indexes_to_drop = []
+        for index, value in enumerate(data_values):
+            if value == 'League Benchmarks:':
+                indexes_to_drop.append(index + offset)
+
+        return indexes_to_drop
+    
+    def column_getter(index):
+        '''
+        Returns a list of values based on index location. 
+        '''
+
+        values = data_values[index::17]
+
+        return values
 
     indexes_to_drop = [index_retriever(number) for number in range(0, 9)]
     indexes_to_drop = [item for sublist in indexes_to_drop for item in sublist]
@@ -53,30 +73,8 @@ def clutch_stats_retriever():
     ]
 
     return df
-
-
-def index_retriever(offset):
-    '''
-    '''
-
-    indexes_to_drop = []
-    for index, value in enumerate(data_values):
-        if value == 'League Benchmarks:':
-            indexes_to_drop.append(index + offset)
-
-    return indexes_to_drop
-
-
-def column_getter(index):
-    '''
-    Returns a list of values based on index location. 
-    '''
-
-    values = data_values[index::17]
     
-    return values
-
-clutch_stats_retriever()
+df = clutch_stats_retriever()
 
 
 
