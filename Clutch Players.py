@@ -52,6 +52,13 @@ def clutch_stats_retriever():
         'Clutch_Sq_EFG'
     ]
 
+    columns = [column for column in df.loc[:, 'Garbage_Percent':]]
+    df[columns] = df[columns].replace('\%', '', regex=True)
+
+    non_numeric_cols = ['Player', 'Position', 'Team']
+    numeric_cols = [column for column in df.columns.values if column not in non_numeric_cols]
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric)
+
     return df
 
 
@@ -78,6 +85,9 @@ def column_getter(list_object, index):
 
 
 df = clutch_stats_retriever()
+
+
+
 
 
 
