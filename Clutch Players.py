@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
 import numpy as np
 import operator
 import os
@@ -92,6 +93,12 @@ df = clutch_stats_retriever()
 
 
 
+grouped_df = df.groupby('Player').agg({'Clutch'       : 'sum', 
+                                       'Clutch_Sq_EFG': 'mean'})
+
+plt.scatter(x=grouped_df['Clutch'], y=grouped_df['Clutch_Sq_EFG'])
+
+grouped_df[grouped_df['Clutch'] > 2000]
 
 
 
