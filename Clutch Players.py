@@ -59,6 +59,10 @@ def clutch_stats_retriever():
     numeric_cols = [column for column in df.columns.values if column not in non_numeric_cols]
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric)
 
+    yrs = [[year] * 50 for year in years]
+    yrs = [year for sublist in yrs for year in sublist]
+    df['Year'] = yrs
+
     return df
 
 
@@ -85,8 +89,6 @@ def column_getter(list_object, index):
 
 
 df = clutch_stats_retriever()
-
-
 
 
 
