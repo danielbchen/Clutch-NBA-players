@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import operator
@@ -92,13 +93,42 @@ def column_getter(list_object, index):
 df = clutch_stats_retriever()
 
 
+def plotter():
+    '''
+    Plots number of clutch shots taken against clutch EFG.
+    '''
 
-grouped_df = df.groupby('Player').agg({'Clutch'       : 'sum', 
-                                       'Clutch_Sq_EFG': 'mean'})
+    df = clutch_stats_retriever()
+    aggregations = {
+        'Clutch': 'sum',
+        'Clutch_EFG': 'mean',
+    }
+    df = df.groupby('Player').agg(aggregations).reset_index()
 
-plt.scatter(x=grouped_df['Clutch'], y=grouped_df['Clutch_Sq_EFG'])
+    conditions = [
+        df['Player'] == 'LeBron James',
+        df['Player'] == 'Kobe Bryant',
+        ((df['Player'] != 'Lebron James') & (df['Player'] != 'Kobe Byrant'))
+    ]
+    colors = ['#FFD300', '#552583', '#A9A9A9']
+    df['Group'] = np.select(conditions, colors)
 
-grouped_df[grouped_df['Clutch'] > 2000]
+    fig, ax = plt.subplots(figsize=(10,10))
+    
+    plt.rcParams['font.family'] = 'arial'
+
+    ax.scatter(x=df['Clutch'], y=df['Clutch_EFG'], color=df['Group'])
+
+    ax.text(2200, 50.2, 'LeBron James')
+    ax.text(2340, 43.0, 'Kobe Bryant')
+
+    ax.set_xlabel('Number of Clutch Shots Taken')
+    ax.set_ylabel('Clutch EFG%')
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    plt.show()
 
 
 
