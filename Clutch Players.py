@@ -113,11 +113,14 @@ def plotter():
     colors = ['#FFD300', '#552583', '#A9A9A9']
     df['Group'] = np.select(conditions, colors)
 
+    m, b = np.polyfit(df['Clutch'], df['Clutch_EFG'], 1)
+
     fig, ax = plt.subplots(figsize=(10,10))
     
     plt.rcParams['font.family'] = 'arial'
 
     ax.scatter(x=df['Clutch'], y=df['Clutch_EFG'], color=df['Group'])
+    ax.plot(df['Clutch'], m * df['Clutch'] + b, color='red', linestyle=':')
 
     ax.text(2200, 50.2, 'LeBron James')
     ax.text(2340, 43.0, 'Kobe Bryant')
