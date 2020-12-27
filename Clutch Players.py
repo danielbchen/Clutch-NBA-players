@@ -108,9 +108,32 @@ def plotter():
     conditions = [
         df['Player'] == 'LeBron James',
         df['Player'] == 'Kobe Bryant',
-        ((df['Player'] != 'Lebron James') & (df['Player'] != 'Kobe Byrant'))
+        df['Player'] == 'Kevin Durant',
+        df['Player'] == 'Stephen Curry',
+        df['Player'] == 'Michael Jordan',
+        df['Player'] == 'Kyrie Irving',
+        df['Player'] == 'Dirk Nowitzki',
+        df['Player'] == 'Paul Pierce',
+        ((df['Player'] != 'LeBron James') & 
+         (df['Player'] != 'Kobe Bryant') &
+         (df['Player'] != 'Kevin Durant') &
+         (df['Player'] != 'Stephen Curry') &
+         (df['Player'] != 'Michael Jordan') &
+         (df['Player'] != 'Kyrie Irving') &
+         (df['Player'] != 'Dirk Nowitzki') &
+         (df['Player'] != 'Paul Pierce'))
     ]
-    colors = ['#FFD300', '#552583', '#A9A9A9']
+    colors = [
+        '#FFD300', 
+        '#552583', 
+        '#000000',
+        '#006bb6',
+        '#ce1141',
+        '#24A0ED',
+        '#00285e',
+        '#008348',
+        '#A9A9A9'
+    ]
     df['Group'] = np.select(conditions, colors)
 
     m, b = np.polyfit(df['Clutch'], df['Clutch_EFG'], 1)
@@ -123,7 +146,12 @@ def plotter():
     ax.plot(df['Clutch'], m * df['Clutch'] + b, color='red', linestyle=':')
 
     ax.text(2200, 50.2, 'LeBron James')
-    ax.text(2340, 43.0, 'Kobe Bryant')
+    ax.text(2340, 43, 'Kobe Bryant')
+    ax.text(1254, 49, 'Kevin Durant')
+    ax.text(639, 55.2, 'Stephen Curry')
+    ax.text(706, 52.8, 'Kyrie Irving')
+    ax.text(1837, 51.5, 'Dirk Nowitzki')
+    ax.text(1759, 46.2, 'Paul Pierce')
 
     ax.set_xlabel('Number of Clutch Shots Taken')
     ax.set_ylabel('Clutch EFG%')
@@ -133,6 +161,8 @@ def plotter():
 
     plt.show()
 
+    
+df[df['Clutch'] > 1700]
 
 
 
